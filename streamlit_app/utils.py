@@ -17,24 +17,25 @@ def _load_results_dataset(dataset_path):
     for one_project_name in treated_projects_folder_names:
         for one_result_type in results_types:
             folder_path = os.path.join(dataset_path, one_project_name, one_result_type)
-            files = os.listdir(folder_path)
-            for one_file_name in files:
-                if one_file_name.endswith(".csv"):
-                    uploaded_file = pd.read_csv(
-                        os.path.join(folder_path, one_file_name)
-                    )
-                elif one_file_name.endswith(".png"):
-                    uploaded_file = mpimg.imread(
-                        os.path.join(folder_path, one_file_name)
-                    )
-                else:
-                    raise Exception(
-                        f"result has to be in '.csv' or '.png', file name is {one_project_name}/{one_result_type}/{one_file_name}"
-                    )
+            if os.path.isdir(folder_path):
+                files = os.listdir(folder_path)
+                for one_file_name in files:
+                    if one_file_name.endswith(".csv"):
+                        uploaded_file = pd.read_csv(
+                            os.path.join(folder_path, one_file_name)
+                        )
+                    elif one_file_name.endswith(".png"):
+                        uploaded_file = mpimg.imread(
+                            os.path.join(folder_path, one_file_name)
+                        )
+                    else:
+                        raise Exception(
+                            f"result has to be in '.csv' or '.png', file name is {one_project_name}/{one_result_type}/{one_file_name}"
+                        )
 
-                data_results[one_project_name][one_result_type][
-                    one_file_name
-                ] = uploaded_file
+                    data_results[one_project_name][one_result_type][
+                        one_file_name
+                    ] = uploaded_file
 
     return data_results
 
