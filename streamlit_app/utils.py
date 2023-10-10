@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import streamlit as st
 from typing import Dict, List
-import cv2
+import matplotlib.image as mpimg
 from const import treated_projects_folder_names, results_types
 from collections import defaultdict
 
@@ -24,7 +24,9 @@ def _load_results_dataset(dataset_path):
                         os.path.join(folder_path, one_file_name)
                     )
                 elif one_file_name.endswith(".png"):
-                    uploaded_file = cv2.imread(os.path.join(folder_path, one_file_name))
+                    uploaded_file = mpimg.imread(
+                        os.path.join(folder_path, one_file_name)
+                    )
                 else:
                     raise Exception(
                         f"result has to be in '.csv' or '.png', file name is {one_project_name}/{one_result_type}/{one_file_name}"
