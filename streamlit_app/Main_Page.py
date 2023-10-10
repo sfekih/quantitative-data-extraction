@@ -18,7 +18,7 @@ st.session_state[
 ] = treated_projects_full_names2folder_names
 st.session_state["results_types"] = results_types
 
-st.write("# DI:CE  Proof of Concept")
+st.markdown("# Disaster Impact: Complete Events (DI:CE) Proof of Concept")
 # st.sidebar.success("Select a demo above.")
 st.markdown(
     """ 
