@@ -1,12 +1,10 @@
 import streamlit as st
 from utils import _get_page_output_one_project
-from auth import check_password
 
-if check_password():
-    st.set_page_config(
-        page_title="Ukraine Human Casualties & Displacement",
-        layout="wide",
-        page_icon="img/Logo-16x16-01.png",
-    )
+st.set_page_config(
+    page_title="Ukraine Human Casualties & Displacement",
+    layout="wide",
+    page_icon="img/Logo-16x16-01.png",
+)
 
-    _get_page_output_one_project("ukraine_displacement", show_raw_results=False)
+_get_page_output_one_project("ukraine_displacement", show_raw_results=False)

@@ -1,15 +1,13 @@
 import streamlit as st
 from utils import _get_page_output_one_project
-from auth import check_password
 
-if check_password():
-    st.set_page_config(
-        page_title="Pakistan Floods Human & Material Casualties",
-        layout="wide",
-        page_icon="img/Logo-16x16-01.png",
-    )
+st.set_page_config(
+    page_title="Pakistan Floods Human & Material Casualties",
+    layout="wide",
+    page_icon="img/Logo-16x16-01.png",
+)
 
-    _get_page_output_one_project("pakistan_floods")
+_get_page_output_one_project("pakistan_floods")
 
 # all_output_files = list(results.keys())
 # no_extension_output_files = list(
