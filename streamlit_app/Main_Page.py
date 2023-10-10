@@ -11,7 +11,7 @@ st.set_page_config(
 )
 # add_logo("LOGOPATH")
 
-RESULTS_FOLDER = os.path.join("..", "DGIx Proof of Concept")
+RESULTS_FOLDER = os.path.join("DGIx Proof of Concept")
 
 st.session_state["results"] = _load_results_dataset(RESULTS_FOLDER)
 st.session_state[
