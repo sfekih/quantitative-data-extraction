@@ -15,23 +15,31 @@ from collections import defaultdict
 
 
 # @st.cache_resource
-def _load_results_one_project(one_project_name: str):
+def _load_results_dataset():
     dataset_path = os.path.join("DGIx Proof of Concept")
-    data_results = defaultdict(lambda: defaultdict())
+    data_results = defaultdict(lambda: defaultdict(lambda: defaultdict()))
 
-    for one_result_type in results_types:
-        folder_path = os.path.join(dataset_path, one_project_name, one_result_type)
-        if os.path.isdir(folder_path):
+    for one_project_name in treated_projects_folder_names:
+        for one_result_type in results_types:
+            folder_path = os.path.join(dataset_path, one_project_name, one_result_type)
             files = os.listdir(folder_path)
             for one_file_name in files:
-                if one_file_name.endswith(".csv") or one_file_name.endswith(".png"):
-                    one_file_full_directory = os.path.join(folder_path, one_file_name)
+                if one_file_name.endswith(".csv"):
+                    uploaded_file = pd.read_csv(
+                        os.path.join(folder_path, one_file_name)
+                    )
+                elif one_file_name.endswith(".png"):
+                    uploaded_file = mpimg.imread(
+                        os.path.join(folder_path, one_file_name)
+                    )
                 else:
                     raise Exception(
                         f"result has to be in '.csv' or '.png', file name is {one_project_name}/{one_result_type}/{one_file_name}"
                     )
 
-                data_results[one_result_type][one_file_name] = one_file_full_directory
+                data_results[one_project_name][one_result_type][
+                    one_file_name
+                ] = uploaded_file
 
     return data_results
 
@@ -74,17 +82,13 @@ def add_logo(file):
     )
 
 
-def _visualize_img(img_file_name: str, img_file_full_directory):
-    img_file = mpimg.imread(img_file_full_directory)
+def _visualize_img(img_file_name: str, img_file):
     st.image(image=img_file, caption=img_file_name)
     # fig = go.Figure()
     # fig.add_trace(cv2.imshow("OpenCV Image", img_file))  # variable here
 
 
-def _visualize_df(
-    df_file_name: str, df_file_full_directory: pd.DataFrame, df_type: str
-):
-    df_file = pd.read_csv(df_file_full_directory)
+def _visualize_df(df_file_name: str, df_file: pd.DataFrame, df_type: str):
     st.dataframe(df_file)
 
     csv = convert_df(df_file)
@@ -100,7 +104,7 @@ def _visualize_df(
 def _get_page_output_one_project(
     project_short_name: str, show_raw_results: bool = True
 ):
-    results_one_project = _load_results_one_project(project_short_name)
+    results_one_project = st.session_state["results"][project_short_name]
     project_extended_name = treated_projects_full_names2folder_names[project_short_name]
 
     st.write(f"# {project_extended_name} Country Level Results")
