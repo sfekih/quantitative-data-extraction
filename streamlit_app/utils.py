@@ -110,6 +110,7 @@ def _get_page_output_one_project(
     country_level_results_one_project = results_one_project[
         "Country Level Results and Visualizations"
     ]
+    st.write(f"country_level_results_one_project : {country_level_results_one_project}")
     output_files_one_country = list(country_level_results_one_project.keys())
     # st.write(f"output_files_one_country {output_files_one_country}")
     no_extension_output_files = list(
