@@ -10,7 +10,7 @@ from collections import defaultdict
 # import plotly.graph_objects as go
 
 
-@st.cache(allow_output_mutation=True)
+@st.cache_resource
 def _load_results_dataset(dataset_path):
     data_results = defaultdict(lambda: defaultdict(lambda: defaultdict()))
 
