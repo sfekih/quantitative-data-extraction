@@ -4,14 +4,19 @@ import os
 import streamlit as st
 from typing import Dict, List
 import matplotlib.image as mpimg
-from const import treated_projects_folder_names, results_types
+from const import (
+    treated_projects_folder_names,
+    results_types,
+    treated_projects_full_names2folder_names,
+)
 from collections import defaultdict
 
 # import plotly.graph_objects as go
 
 
 @st.cache_resource
-def _load_results_dataset(dataset_path):
+def _load_results_dataset():
+    dataset_path = os.path.join("DGIx Proof of Concept")
     data_results = defaultdict(lambda: defaultdict(lambda: defaultdict()))
 
     for one_project_name in treated_projects_folder_names:
@@ -20,13 +25,9 @@ def _load_results_dataset(dataset_path):
             if os.path.isdir(folder_path):
                 files = os.listdir(folder_path)
                 for one_file_name in files:
-                    if one_file_name.endswith(".csv"):
-                        uploaded_file = pd.read_csv(
-                            os.path.join(folder_path, one_file_name)
-                        )
-                    elif one_file_name.endswith(".png"):
-                        uploaded_file = mpimg.imread(
-                            os.path.join(folder_path, one_file_name)
+                    if one_file_name.endswith(".csv") or one_file_name.endswith(".png"):
+                        one_file_full_directory = os.path.join(
+                            folder_path, one_file_name
                         )
                     else:
                         raise Exception(
@@ -35,9 +36,12 @@ def _load_results_dataset(dataset_path):
 
                     data_results[one_project_name][one_result_type][
                         one_file_name
-                    ] = uploaded_file
+                    ] = one_file_full_directory
 
     return data_results
+
+
+results = _load_results_dataset()
 
 
 def convert_df(df):
@@ -78,13 +82,17 @@ def add_logo(file):
     )
 
 
-def _visualize_img(img_file_name: str, img_file):
+def _visualize_img(img_file_name: str, img_file_full_directory):
+    img_file = mpimg.imread(img_file_full_directory)
     st.image(image=img_file, caption=img_file_name)
     # fig = go.Figure()
     # fig.add_trace(cv2.imshow("OpenCV Image", img_file))  # variable here
 
 
-def _visualize_df(df_file_name: str, df_file: pd.DataFrame, df_type: str):
+def _visualize_df(
+    df_file_name: str, df_file_full_directory: pd.DataFrame, df_type: str
+):
+    df_file = pd.read_csv(df_file_full_directory)
     st.dataframe(df_file)
 
     csv = convert_df(df_file)
@@ -100,13 +108,11 @@ def _visualize_df(df_file_name: str, df_file: pd.DataFrame, df_type: str):
 def _get_page_output_one_project(
     project_short_name: str, show_raw_results: bool = True
 ):
-    project_extended_name = st.session_state[
-        "treated_projects_full_names2folder_names"
-    ][project_short_name]
+    project_extended_name = treated_projects_full_names2folder_names[project_short_name]
 
     st.write(f"# {project_extended_name} Country Level Results")
 
-    results_one_project = st.session_state["results"][project_short_name]
+    results_one_project = results[project_short_name]
 
     ### COUNTRY LEVEL RESULTS (DF, VIZU)
     st.write("## Country Level Results and Visualizations")

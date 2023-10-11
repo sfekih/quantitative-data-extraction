@@ -6,5 +6,4 @@ st.set_page_config(
     layout="wide",
     page_icon="img/Logo-16x16-01.png",
 )
-
 _get_page_output_one_project("ukraine_displacement", show_raw_results=False)

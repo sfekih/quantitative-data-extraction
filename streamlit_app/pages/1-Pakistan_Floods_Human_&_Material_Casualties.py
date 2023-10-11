@@ -1,6 +1,7 @@
 import streamlit as st
 from utils import _get_page_output_one_project
 
+
 st.set_page_config(
     page_title="Pakistan Floods Human & Material Casualties",
     layout="wide",
