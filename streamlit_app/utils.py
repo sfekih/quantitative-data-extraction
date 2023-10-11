@@ -10,13 +10,14 @@ from const import (
     treated_projects_full_names2folder_names,
 )
 from collections import defaultdict
+from pathlib import Path
 
 # import plotly.graph_objects as go
 
 
 # @st.cache_resource
 def _load_results_dataset():
-    dataset_path = os.path.join("DGIx Proof of Concept")
+    dataset_path = os.path.join(Path(__file__).parent, "DGIx Proof of Concept")
     data_results = defaultdict(lambda: defaultdict(lambda: defaultdict()))
 
     for one_project_name in treated_projects_folder_names:
