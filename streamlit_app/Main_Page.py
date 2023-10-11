@@ -15,7 +15,6 @@ st.session_state["results"] = _load_results_dataset()
 
 
 def home_page():
-    st.markdown(f" listdir {os.listdir()}")
     st.markdown("# Disaster Impact: Complete Events (DI: CE) Proof of Concept")
     # st.sidebar.success("Select a demo above.")
     st.markdown(
